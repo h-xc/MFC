@@ -1,0 +1,7 @@
+# filename : generic.mak
+# make file for generic.exe (Generic Windows Application)
+# usage : nmake generic.mak (Microsoft C/C++ 9.00) (Visual C++ 2.x)
+# usage : nmake generic.mak (Microsoft C/C++ 10.00) (Visual C++ 4.0)
+MFC.obj : my.cpp my.h mfc.cpp mfc.h
+	cl my.cpp mfc.cpp /EHsc
+
