@@ -18,6 +18,18 @@ AFX_CLASSINIT::AFX_CLASSINIT(CRuntimeClass *pNewClass) // 标准的串行队列�
     CRuntimeClass::pFirstClass = pNewClass;
 }
 
+BOOL CObject::IsKindOf(const CRuntimeClass *pClass) const
+{
+    CRuntimeClass *pClassThis = GetRuntimeClass();
+    while (pClassThis != NULL)
+    {
+        if (pClassThis == pClass)
+            return TRUE;
+        pClassThis = pClassThis->m_pBaseClass;
+    }
+    return FALSE; // walked to the top, no match
+}
+
 BOOL CWnd::Create()
 {
     return TRUE;

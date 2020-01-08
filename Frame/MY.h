@@ -15,9 +15,24 @@ public:
 
 class CMyFrameWnd : public CFrameWnd
 {
+    DECLARE_DYNAMIC(CMyFrameWnd) // 在MFC 程序中这里其实是DECLARE_DYNCREATE()
 public:
     CMyFrameWnd();
     ~CMyFrameWnd() {}
 };
-// global function
-void PrintAllClasses();
+
+class CMyDoc : public CDocument
+{
+    DECLARE_DYNAMIC(CMyDoc) // 在MFC 程序中这里其实是DECLARE_DYNCREATE()
+public:
+    CMyDoc() {}
+    ~CMyDoc() {}
+};
+
+class CMyView : public CView
+{
+    DECLARE_DYNAMIC(CMyView) // 在MFC 程序中这里其实是DECLARE_DYNCREATE()
+public:
+    CMyView() {}
+    ~CMyView() {}
+};

@@ -69,6 +69,7 @@ public:
 public:
     virtual CRuntimeClass *GetRuntimeClass() const;
     static CRuntimeClass classCObject;
+    BOOL IsKindOf(const CRuntimeClass* pClass) const;
 };
 
 class CCmdTarget : public CObject
