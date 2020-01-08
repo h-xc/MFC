@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "mfc.h"
+#include "MFC.h"
 
 using namespace std;
 
@@ -15,24 +15,29 @@ public:
 
 class CMyFrameWnd : public CFrameWnd
 {
-    DECLARE_DYNAMIC(CMyFrameWnd) // 在MFC 程序中这里其实是DECLARE_DYNCREATE()
+    DECLARE_DYNCREATE(CMyFrameWnd) // 在MFC 程序中这里其实是DECLARE_DYNCREATE()
 public:
     CMyFrameWnd();
     ~CMyFrameWnd() {}
+    void SayHello() { cout << "Hello CMyFrameWnd \n"; }
 };
 
 class CMyDoc : public CDocument
 {
-    DECLARE_DYNAMIC(CMyDoc) // 在MFC 程序中这里其实是DECLARE_DYNCREATE()
+    DECLARE_DYNCREATE(CMyDoc) // 在MFC 程序中这里其实是DECLARE_DYNCREATE()
 public:
-    CMyDoc() {}
+    CMyDoc() {cout << "CMyDoc Constructor \n";}
     ~CMyDoc() {}
+    void SayHello() { cout << "Hello CMyDoc \n"; }
 };
 
 class CMyView : public CView
 {
-    DECLARE_DYNAMIC(CMyView) // 在MFC 程序中这里其实是DECLARE_DYNCREATE()
+    DECLARE_DYNCREATE(CMyView) // 在MFC 程序中这里其实是DECLARE_DYNCREATE()
 public:
-    CMyView() {}
+    CMyView() {cout << "CMyView Constructor \n";}
     ~CMyView() {}
+    void SayHello() { cout << "Hello CMyView \n"; }
 };
+// global function
+void AfxPrintAllClasses();

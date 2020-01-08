@@ -9,7 +9,11 @@ typedef char *LPSTR;
 #define LPCSTR LPSTR
 
 #define UINT int
-#define PASCAL _stdcal
+#define PASCAL 
+#define TRACE1 printf
+
+#include <stdio.h>
+#include <string.h>
 
 // 类别型录结构体
 class CObject;
@@ -19,8 +23,11 @@ struct CRuntimeClass
     LPCSTR m_lpszClassName;
     int m_nObjectSize;
     UINT m_wSchema;                  // schema number of the loaded class
-    CObject *(*m_pfnCreateObject)(); // NULL => abstract class
+    CObject *(PASCAL *m_pfnCreateObject)(); // NULL => abstract class
     CRuntimeClass *m_pBaseClass;
+
+    CObject *CreateObject();
+    static CRuntimeClass *PASCAL Load();
 
     // CRuntimeClass objects linked together in simple list
     static CRuntimeClass *pFirstClass; // start of class list
@@ -32,6 +39,11 @@ struct CRuntimeClass
 public:                                     \
     static CRuntimeClass class##class_name; \
     virtual CRuntimeClass *GetRuntimeClass() const;
+
+// 带动态生成的类别型录
+#define DECLARE_DYNCREATE(class_name) \
+    DECLARE_DYNAMIC(class_name)       \
+    static CObject *PASCAL CreateObject();
 
 // 一个结构体，定义了虚构函数，函数将传入的类别型录插入到串行队列中
 struct AFX_CLASSINIT
@@ -59,6 +71,17 @@ struct AFX_CLASSINIT
 #define IMPLEMENT_DYNAMIC(class_name, base_class_name) \
     _IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, 0xFFFF, NULL)
 
+
+// 带动态生成的类别型录的内容指定以及串接工作
+#define IMPLEMENT_DYNCREATE(class_name, base_class_name)         \
+    CObject *PASCAL class_name::CreateObject()                   \
+    {                                                            \
+        return new class_name;                                   \
+    }                                                            \
+    _IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, 0xFFFF, \
+                            class_name::CreateObject)
+
+
 using namespace std;
 class CObject
 {
@@ -70,6 +93,8 @@ public:
     virtual CRuntimeClass *GetRuntimeClass() const;
     static CRuntimeClass classCObject;
     BOOL IsKindOf(const CRuntimeClass* pClass) const;
+
+    virtual void SayHello() { cout << "Hello CObject \n"; }
 };
 
 class CCmdTarget : public CObject
@@ -136,24 +161,26 @@ public:
 
 class CWnd : public CCmdTarget
 {
-    DECLARE_DYNAMIC(CWnd)
+    DECLARE_DYNCREATE(CWnd)
 public:
-    CWnd::CWnd() {}
+    CWnd::CWnd() {cout << "CWnd Constructor \n";}
     CWnd::~CWnd() {}
     virtual BOOL Create();
     BOOL CreateEx();
     virtual BOOL PreCreateWindow();
+    void SayHello() { cout << "Hello CWnd \n"; }
 };
 
 // base Cwnd
 class CFrameWnd : public CWnd
 {
-    DECLARE_DYNAMIC(CFrameWnd)
+    DECLARE_DYNCREATE(CFrameWnd)
 public:
-    CFrameWnd::CFrameWnd() {}
+    CFrameWnd::CFrameWnd() {cout << "CFrameWnd Constructor \n";}
     CFrameWnd::~CFrameWnd() {}
     BOOL Create();
     virtual BOOL PreCreateWindow();
+    void SayHello() { cout << "Hello CFrameWnd \n"; }
 };
 
 class CView : public CWnd
