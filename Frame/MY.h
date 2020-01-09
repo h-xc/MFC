@@ -11,6 +11,7 @@ public:
     ~CMyWinApp() {}
 
     virtual BOOL CMyWinApp::InitInstance();
+    DECLARE_MESSAGE_MAP()
 };
 
 class CMyFrameWnd : public CFrameWnd
@@ -20,6 +21,7 @@ public:
     CMyFrameWnd();
     ~CMyFrameWnd() {}
     void SayHello() { cout << "Hello CMyFrameWnd \n"; }
+    DECLARE_MESSAGE_MAP()
 };
 
 class CMyDoc : public CDocument
@@ -29,6 +31,7 @@ public:
     CMyDoc() {cout << "CMyDoc Constructor \n";}
     ~CMyDoc() {}
     void SayHello() { cout << "Hello CMyDoc \n"; }
+    DECLARE_MESSAGE_MAP()
 };
 
 class CMyView : public CView
@@ -38,6 +41,7 @@ public:
     CMyView() {cout << "CMyView Constructor \n";}
     ~CMyView() {}
     void SayHello() { cout << "Hello CMyView \n"; }
+    DECLARE_MESSAGE_MAP()
 };
 // global function
 void AfxPrintAllClasses();
